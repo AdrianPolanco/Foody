@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  foody-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: foody-db
+    ports:
+    - "1432:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=DbAdmin!
+    volumes:
+      - sqldata-foody:/var/opt/mssql:rw
+volumes:
+  sqldata-foody:

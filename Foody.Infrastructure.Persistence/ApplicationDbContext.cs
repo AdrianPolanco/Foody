@@ -17,6 +17,7 @@ namespace Foody.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new IngredientConfiguration());
             base.OnModelCreating(builder);
         }
 

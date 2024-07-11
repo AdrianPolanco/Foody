@@ -14,7 +14,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace Foody.API.Controllers
 {
     [ApiController]
-    [Route("auth")]
+    [Route("api/auth")]
     public class AccountController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -62,7 +62,7 @@ namespace Foody.API.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        [Authorize(Policy = "RequireManagerRole")]
         [HttpGet("forecasts")]
         public IEnumerable<WeatherForecast> Get()
         {

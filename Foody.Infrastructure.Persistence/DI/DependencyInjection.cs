@@ -22,8 +22,8 @@ namespace Foody.Infrastructure.Persistence.DI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Administrador"));
-                options.AddPolicy("RequireCustomerRole", policy => policy.RequireRole("Cliente"));
+                options.AddPolicy("RequireManagerRole", policy => policy.RequireRole("Manager"));
+                options.AddPolicy("RequireWaiterRole", policy => policy.RequireRole("Waiter"));
             });
 
             // Configurar Identity sin roles usando PooledDbContextFactory

@@ -51,6 +51,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().WithGroupName("api");
 
 app.Run();

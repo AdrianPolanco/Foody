@@ -35,7 +35,8 @@ namespace Foody.Infrastructure.Persistence.Services
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(expireInMinutes),
+                Expires = DateTime.UtcNow.AddMinutes(expireInMinutes),
+                NotBefore = DateTime.UtcNow,
                 Audience = _configuration["Jwt:Audience"],
                 Issuer = _configuration["Jwt:Issuer"],
                 SigningCredentials = credentials

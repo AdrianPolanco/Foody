@@ -6,6 +6,6 @@ namespace Foody.Core.Application.Interfaces
 {
     public interface IJwtGenerator
     {
-        string Generate(User user);
+       public string Generate(User user);
     }
 }

@@ -1,7 +1,7 @@
-﻿
-
-using Foody.Core.Application.Interfaces;
+﻿using Foody.Core.Application.Interfaces;
+using Foody.Core.Domain.Interfaces;
 using Foody.Infrastructure.Persistence.Models;
+using Foody.Infrastructure.Persistence.Repository;
 using Foody.Infrastructure.Persistence.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -11,9 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Foody.Infrastructure.Persistence.DI
+namespace Foody.Infrastructure.Persistence.Extensions.DI
 {
-    public static class DependencyInjection
+    public static class PersistenceLayer
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
@@ -64,6 +64,7 @@ namespace Foody.Infrastructure.Persistence.DI
                 });
 
             services.AddScoped<IJwtGenerator, JwtTokenGenerator>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             return services;
         }

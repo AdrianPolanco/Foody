@@ -1,8 +1,10 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Foody.API.Services.Factories;
+using Foody.Core.Application.Interfaces.HATEOAS;
+using Microsoft.OpenApi.Models;
 
-namespace Foody.API.DI
+namespace Foody.API.Extensions.DI
 {
-    public static class DependencyInjection
+    public static class ApiLayer
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
         {
@@ -47,7 +49,10 @@ namespace Foody.API.DI
                         }
                     });
             });
-            
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ILinkFactory, LinkFactory>();
+
             return services;
         }
     }

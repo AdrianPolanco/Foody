@@ -9,6 +9,12 @@ namespace Foody.API.Mappers
         public ApiProfile() { 
             CreateMap<LoginRequest, ApplicationUser>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Username));
+
+            CreateMap<SignUpUserRequest, ApplicationUser>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Username))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Lastname, opt => opt.MapFrom(src => src.Lastname));
         }
     }
 }

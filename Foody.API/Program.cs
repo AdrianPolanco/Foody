@@ -1,6 +1,6 @@
-using Foody.API.DI;
+using Foody.API.Extensions.DI;
 using Foody.Infrastructure.Persistence;
-using Foody.Infrastructure.Persistence.DI;
+using Foody.Infrastructure.Persistence.Extensions.DI;
 using Foody.Infrastructure.Persistence.Models;
 using Foody.Shared.DI;
 using Microsoft.AspNetCore.Identity;

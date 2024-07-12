@@ -1,9 +1,11 @@
-﻿using Foody.Core.Domain.Entities.Base;
+﻿
+
+using Foody.Core.Domain.Entities.Base;
 using System.Linq.Expressions;
 
-namespace Foody.Core.Domain
+namespace Foody.Core.Domain.Interfaces
 {
-    public interface IRepository<T> where T : Entity
+    public interface IEntityService<T> where T : Entity
     {
         Task<T> CreateAsync(T entity, CancellationToken cancellationToken);
         Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool readOnly = false, bool ignoreQueryFilters = false, params Expression<Func<T, object>>[] includes);

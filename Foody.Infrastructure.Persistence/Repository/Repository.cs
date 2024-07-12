@@ -1,6 +1,5 @@
-﻿
-using Foody.Core.Domain;
-using Foody.Core.Domain.Entities.Base;
+﻿using Foody.Core.Domain.Entities.Base;
+using Foody.Core.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;

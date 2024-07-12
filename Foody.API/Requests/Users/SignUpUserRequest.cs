@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Foody.API.Requests
+namespace Foody.API.Requests.Users
 {
     public record SignUpUserRequest : IValidatableObject
     {
-        [Required] 
+        [Required]
         [MinLength(1, ErrorMessage = "El nombre debe tener al menos 1 caracter")]
         [MaxLength(50, ErrorMessage = "El nombre no puede tener más de 50 caracteres")]
         [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'-]*$", ErrorMessage = "El apellido solo puede contener letras y caracteres latinos")]
@@ -41,7 +41,7 @@ namespace Foody.API.Requests
             if (Password != ConfirmPassword) yield return new ValidationResult("Las contraseñas no coinciden", new[] { nameof(Password), nameof(ConfirmPassword) });
         }
     }
-  
+
 }
 
 

@@ -1,5 +1,6 @@
 using AutoMapper;
 using Foody.API.Requests;
+using Foody.API.Requests.Users;
 using Foody.API.Responses;
 using Foody.Core.Application.HATEOAS;
 using Foody.Core.Application.Interfaces;
@@ -7,8 +8,8 @@ using Foody.Core.Application.Interfaces.HATEOAS;
 using Foody.Core.Domain.Entities;
 using Foody.Core.Domain.Enums;
 using Foody.Infrastructure.Persistence.Models;
-using Foody.Shared.Constants;
 using Foody.Shared.Constants.Messages;
+using Foody.Shared.Hateoas;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -46,7 +47,7 @@ namespace Foody.API.Controllers
         }
 
         
-        [HttpPost(Hateoas.LOGIN, Name = nameof(Login))]
+        [HttpPost(HateoasConstants.LOGIN, Name = nameof(Login))]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             if(!ModelState.IsValid) return BadRequest(ResponseMessages.InvalidRequest);
@@ -68,7 +69,7 @@ namespace Foody.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost(Hateoas.SIGN_UP_ADMIN, Name = nameof(SignUpAdmin))]
+        [HttpPost(HateoasConstants.SIGN_UP_ADMIN, Name = nameof(SignUpAdmin))]
         public async Task<IActionResult> SignUpAdmin([FromBody] SignUpUserRequest request)
         {
            if(!ModelState.IsValid) return BadRequest(ResponseMessages.InvalidRequest);
@@ -81,9 +82,9 @@ namespace Foody.API.Controllers
 
             await _userManager.AddToRoleAsync(appUser, "Manager");
 
-            _linkFactory.CreateLink(nameof(SignUpAdmin), Hateoas.SELF, HttpMethod.Post);
-            _linkFactory.CreateLink(nameof(SignUpWaiter), Hateoas.SELF, HttpMethod.Post);
-            _linkFactory.CreateLink(nameof(Login), Hateoas.SELF, HttpMethod.Post);
+            _linkFactory.CreateLink(nameof(SignUpAdmin), HateoasConstants.SELF, HttpMethod.Post);
+            _linkFactory.CreateLink(nameof(SignUpWaiter), HateoasConstants.SELF, HttpMethod.Post);
+            _linkFactory.CreateLink(nameof(Login), HateoasConstants.SELF, HttpMethod.Post);
 
             List<Link> links = _linkFactory.GetLinks();
 
@@ -92,7 +93,7 @@ namespace Foody.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost(Hateoas.SIGN_UP_WAITER, Name = nameof(SignUpWaiter))]
+        [HttpPost(HateoasConstants.SIGN_UP_WAITER, Name = nameof(SignUpWaiter))]
         public async Task<IActionResult> SignUpWaiter([FromBody] SignUpUserRequest request)
         {
             if(!ModelState.IsValid) return BadRequest(ResponseMessages.InvalidRequest);
@@ -105,9 +106,9 @@ namespace Foody.API.Controllers
 
             await _userManager.AddToRoleAsync(appUser, "Waiter");
 
-            _linkFactory.CreateLink(nameof(SignUpAdmin), Hateoas.SIGN_UP_ADMIN, HttpMethod.Post, Hateoas.SELF);
-            _linkFactory.CreateLink(nameof(SignUpWaiter), Hateoas.SIGN_UP_WAITER, HttpMethod.Post, Hateoas.SELF);
-            _linkFactory.CreateLink(nameof(Login), Hateoas.LOGIN, HttpMethod.Post, Hateoas.SELF);
+            _linkFactory.CreateLink(nameof(SignUpAdmin), HateoasConstants.SIGN_UP_ADMIN, HttpMethod.Post, HateoasConstants.SELF);
+            _linkFactory.CreateLink(nameof(SignUpWaiter), HateoasConstants.SIGN_UP_WAITER, HttpMethod.Post, HateoasConstants.SELF);
+            _linkFactory.CreateLink(nameof(Login), HateoasConstants.LOGIN, HttpMethod.Post, HateoasConstants.SELF);
 
             List<Link> links = _linkFactory.GetLinks();
 

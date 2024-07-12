@@ -1,6 +1,10 @@
 ﻿using Foody.API.Services.Factories;
+using Foody.Core.Application.HATEOAS;
 using Foody.Core.Application.Interfaces.HATEOAS;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace Foody.API.Extensions.DI
 {

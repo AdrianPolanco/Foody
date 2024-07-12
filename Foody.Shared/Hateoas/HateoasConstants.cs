@@ -1,7 +1,6 @@
-﻿
-namespace Foody.Shared.Constants
+﻿namespace Foody.Shared.Hateoas
 {
-    public static class Hateoas
+    public class HateoasConstants
     {
         public const string SELF = "self";
         public const string SIGN_UP_ADMIN = "sign-up/admin";

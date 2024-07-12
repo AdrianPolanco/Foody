@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Foody.Shared.DI
 {
-    public static class DependencyInjection
+    public static class SharedLayer
     {
         //Recibiendo los parametros de los otros proyectos para buscar los perfiles de AutoMapper
         public static IServiceCollection AddProfiles(this IServiceCollection services, params Assembly[] assemblies)
@@ -22,6 +22,14 @@ namespace Foody.Shared.DI
                     config.AddProfile(profile);
                 }
             }, assemblies);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCQRS(this IServiceCollection services, params Assembly[] assemblies)
+        {
+
+            services.AddMediatR(config => config.RegisterServicesFromAssemblies(assemblies));
 
             return services;
         }

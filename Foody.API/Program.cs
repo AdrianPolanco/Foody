@@ -1,4 +1,6 @@
 using Foody.API.Extensions.DI;
+using Foody.Core.Application.Extensions.DI;
+using Foody.Core.Application.HATEOAS;
 using Foody.Infrastructure.Persistence;
 using Foody.Infrastructure.Persistence.Extensions.DI;
 using Foody.Infrastructure.Persistence.Models;
@@ -13,7 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.AddProfiles(Assembly.GetExecutingAssembly(), Assembly.Load("Foody.Core.Domain"), Assembly.Load("Foody.Core.Application"), Assembly.Load("Foody.Infrastructure.Persistence"));
+var assemblies = new Assembly[] { Assembly.GetExecutingAssembly(), Assembly.Load("Foody.Core.Domain"), Assembly.Load("Foody.Core.Application"), Assembly.Load("Foody.Infrastructure.Persistence") };
+builder.Services.AddApplication();
+builder.Services.AddProfiles(assemblies);
+builder.Services.AddCQRS(assemblies);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

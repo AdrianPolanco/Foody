@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Foody.API.Requests;
+using Foody.API.Requests.Ingredient;
 using Foody.API.Requests.Users;
 using Foody.Core.Application.Features.Ingredients.Create;
 using Foody.Infrastructure.Persistence.Models;

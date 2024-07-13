@@ -53,14 +53,24 @@ namespace Foody.API.Controllers
             return CreatedAtAction(nameof(Create), response);
         }
 
-        [HttpGet("{id}", Name = nameof(Get))]
-        public async Task<IActionResult> Get(Guid id)
+        [HttpGet("{id}", Name = nameof(GetById))]
+        public async Task<IActionResult> GetById(Guid id)
         {
             GetIngredientByIdQuery query = new GetIngredientByIdQuery(id);
 
             GetIngredientByIdQueryResult result = await _sender.Send(query);
 
             if(result == null) return NotFound();
+
+            return Ok(result);
+        }
+
+        [HttpGet(Name = nameof(Get))]
+        public async Task<IActionResult> Get(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5, bool includeFurtherData = false, bool readOnly = false)
+        {
+            GetIngredientsQuery query = new GetIngredientsQuery(cursor, isNextPage, pageSize, includeFurtherData, readOnly);
+
+            GetIngredientsQueryResult result = await _sender.Send<GetIngredientsQueryResult>(query, cancellationToken);
 
             return Ok(result);
         }

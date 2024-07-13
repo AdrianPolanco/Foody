@@ -137,5 +137,36 @@ namespace Foody.Infrastructure.Persistence.Repository
             }
         }
 
+        public async Task<List<T>> GetByPagesAsync(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, bool readOnly = true, int pageSize = 5, Expression<Func<T, object>>[]? includes = null)
+        {
+            IQueryable<T> query = _dbSet.OrderBy(e => e.Id).ThenBy(e => e.CreatedAt);
+
+            int takeAmount = pageSize + 1;
+
+            if(cursor != null)
+            {
+                //Si es la siguiente página, se obtienen los elementos mayores al cursor
+                if (isNextPage is true) query = query.Where(e => e.Id > cursor);
+                else
+                {
+                    //Si es la página anterior, se obtienen los elementos menores al cursor y se reestablece el tamaño de la página
+                    query = query.Where(e => e.Id < cursor).OrderByDescending(e => e.Id);
+                    takeAmount = pageSize;
+                }
+            }
+
+           //Si el include no es null, lo agregamos a la query 
+           if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+           //Tomamos la cantidad de elementos necesarios SIN SALTARLOS, para evitar cargar elementos innecesarios
+           query = query.Take(takeAmount);
+           
+           //Si es la página anterior, se invierte la query para que los elementos estén en orden descendente
+           if(isNextPage is false && cursor is not null) query = query.Reverse();
+
+           if(readOnly) query = query.AsNoTracking();
+
+           return await query.ToListAsync(cancellationToken);
+        }
     }
 }

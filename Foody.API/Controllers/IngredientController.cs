@@ -4,21 +4,18 @@ using Foody.API.Responses;
 using Foody.Core.Application.Features.Ingredients.Create;
 using Foody.Core.Application.Features.Ingredients.Get;
 using Foody.Core.Application.HATEOAS;
-using Foody.Core.Application.Interfaces.HATEOAS;
 using Foody.Core.Domain.Entities;
 using Foody.Core.Domain.Interfaces;
-using Foody.Shared.Hateoas;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+
 
 namespace Foody.API.Controllers
 {
     [ApiController]
     [Route("api/ingredients")]
-  //  [Authorize(Policy = "RequireManagerRole")]
+    [Authorize(Policy = "RequireManagerRole")]
     public class IngredientController : ControllerBase
     {
         private readonly ISender _sender;

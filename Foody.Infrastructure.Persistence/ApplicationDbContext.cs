@@ -1,4 +1,5 @@
-﻿using Foody.Core.Domain.Enums;
+﻿using Foody.Core.Domain.Entities;
+using Foody.Core.Domain.Enums;
 using Foody.Infrastructure.Persistence.Configurations;
 using Foody.Infrastructure.Persistence.Models;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ namespace Foody.Infrastructure.Persistence
         {
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new IngredientConfiguration());
+            builder.ApplyConfiguration(new DishConfiguration());
             base.OnModelCreating(builder);
         }
 

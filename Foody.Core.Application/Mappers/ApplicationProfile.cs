@@ -1,7 +1,8 @@
 ﻿
 
 using AutoMapper;
-using Foody.Core.Application.Features.Dishes;
+using Foody.Core.Application.Features.Dishes.Create;
+using Foody.Core.Application.Features.Dishes.Update;
 using Foody.Core.Application.Features.Ingredients.Create;
 using Foody.Core.Domain.Entities;
 
@@ -26,7 +27,15 @@ namespace Foody.Core.Application.Mappers
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
                 .ForMember(dest => dest.DishesIngredients, opt => opt.Ignore())
                 .ForMember(dest => dest.Ingredients, opt => opt.Ignore());
-                ;
+                
+            CreateMap<UpdateDishCommand, Dish>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.PeopleQuantity, opt => opt.MapFrom(src => src.PeopleQuantity))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ForMember(dest => dest.DishesIngredients, opt => opt.Ignore())
+                .ForMember(dest => dest.Ingredients, opt => opt.Ignore());
 
         }
     }

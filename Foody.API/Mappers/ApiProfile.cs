@@ -3,7 +3,8 @@ using Foody.API.Requests;
 using Foody.API.Requests.Dishes;
 using Foody.API.Requests.Ingredient;
 using Foody.API.Requests.Users;
-using Foody.Core.Application.Features.Dishes;
+using Foody.Core.Application.Features.Dishes.Create;
+using Foody.Core.Application.Features.Dishes.Update;
 using Foody.Core.Application.Features.Ingredients.Create;
 using Foody.Infrastructure.Persistence.Models;
 
@@ -30,6 +31,13 @@ namespace Foody.API.Mappers
                 .ForMember(dest => dest.PeopleQuantity, opt => opt.MapFrom(src => src.PeopleQuantity))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.Ingredients));
+
+            CreateMap<UpdateDishRequest, UpdateDishCommand>()
+                .ForCtorParam("Name", opt => opt.MapFrom(src => src.Name))
+                .ForCtorParam("Price", opt => opt.MapFrom(src => src.Price))
+                .ForCtorParam("PeopleQuantity", opt => opt.MapFrom(src => src.PeopleQuantity))
+                .ForCtorParam("Ingredients", opt => opt.MapFrom(src => src.Ingredients))
+                .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category));
         }
     }
 }

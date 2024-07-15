@@ -1,7 +1,7 @@
 ﻿using Foody.Core.Application.Interfaces.MediatR.CQRS.Commands;
 using Foody.Core.Domain.Enums;
 
-namespace Foody.Core.Application.Features.Dishes
+namespace Foody.Core.Application.Features.Dishes.Create
 {
     public record CreateDishCommand(string Name, decimal Price, int PeopleQuantity, List<Guid> Ingredients, DishCategory Category) : ICommand<CreateDishCommandResult>;
 }

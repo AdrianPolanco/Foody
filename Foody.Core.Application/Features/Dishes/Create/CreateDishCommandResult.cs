@@ -1,7 +1,5 @@
 ﻿using Foody.Core.Domain.Entities;
-using Microsoft.AspNetCore.Http;
-
-namespace Foody.Core.Application.Features.Dishes
+namespace Foody.Core.Application.Features.Dishes.Create
 {
     public record CreateDishCommandResult(Dish? Dish, int StatusCode, string Message);
 }

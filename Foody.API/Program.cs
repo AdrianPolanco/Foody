@@ -1,6 +1,5 @@
 using Foody.API.Extensions.DI;
 using Foody.Core.Application.Extensions.DI;
-using Foody.Core.Application.HATEOAS;
 using Foody.Infrastructure.Persistence;
 using Foody.Infrastructure.Persistence.Extensions.DI;
 using Foody.Infrastructure.Persistence.Models;

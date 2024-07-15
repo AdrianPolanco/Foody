@@ -35,7 +35,7 @@ namespace Foody.Infrastructure.Persistence.Repository
             }
         }
 
-        public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+        public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken, bool softDelete = true)
         {
             using (await BeginTransactionAsync())
             {
@@ -43,7 +43,8 @@ namespace Foody.Infrastructure.Persistence.Repository
                 {
                     var entity = await GetByIdAsync(id, cancellationToken);
                     if (entity is null) return;
-                    _context.Set<T>().Remove(entity);
+                    if(!softDelete) entity.Deleted = true;
+                    else _dbSet.Remove(entity);
                     await SaveChangesAsync(cancellationToken);
                     await CommitAsync(cancellationToken);
                 }
@@ -172,10 +173,14 @@ namespace Foody.Infrastructure.Persistence.Repository
 
         public async Task<List<T>> BulkInsertAsync(List<T> entities, CancellationToken cancellationToken)
         {
-            using (_context)
-            {
-                await _context.BulkInsertAsync(entities, cancellationToken: cancellationToken);
-            }
+            await _context.BulkInsertAsync(entities, cancellationToken: cancellationToken);
+           
+            return entities;
+        }
+
+        public async Task<List<T>> BulkDeleteAsync(List<T> entities, CancellationToken cancellationToken)
+        {
+            await _context.BulkDeleteAsync(entities, cancellationToken: cancellationToken);
 
             return entities;
         }

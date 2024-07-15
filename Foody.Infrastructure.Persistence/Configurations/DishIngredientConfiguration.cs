@@ -13,10 +13,10 @@ namespace Foody.Infrastructure.Persistence.Configurations
 
             builder.HasKey(di => new { di.DishId, di.IngredientId });
 
-           // builder.HasIndex(di => di.Id).IsUnique();
+            // builder.HasIndex(di => di.Id).IsUnique();
 
-          builder.Property(di => di.Id)
-                .ValueGeneratedOnAdd();
+            builder.Property(di => di.Id)
+                    .HasDefaultValueSql("NEWID()");
 
             builder.HasOne(di => di.Dish)
                 .WithMany(d => d.DishesIngredients)

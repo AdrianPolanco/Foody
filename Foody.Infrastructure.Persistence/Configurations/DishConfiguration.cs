@@ -12,6 +12,8 @@ namespace Foody.Infrastructure.Persistence.Configurations
             builder.ToTable("Dishes");
             builder.HasKey(d => d.Id);
 
+            builder.Ignore(d => d.Ingredients);
+
             builder.Property(d => d.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -29,9 +31,7 @@ namespace Foody.Infrastructure.Persistence.Configurations
 
             builder.HasQueryFilter(d => !d.Deleted);
 
-            builder.HasMany(d => d.Ingredients)
-                .WithMany(i => i.Dishes)
-                .UsingEntity(j => j.ToTable("DishIngredients"));
+
         }
     }
 }

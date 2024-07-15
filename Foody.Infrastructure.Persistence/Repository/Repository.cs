@@ -1,4 +1,5 @@
-﻿using Foody.Core.Domain.Entities.Base;
+﻿using EFCore.BulkExtensions;
+using Foody.Core.Domain.Entities.Base;
 using Foody.Core.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -54,7 +55,7 @@ namespace Foody.Infrastructure.Persistence.Repository
             }
         }
 
-        public virtual async Task<List<T>> Get(CancellationToken cancellationToken, Expression<Func<T, bool>>? filter = null, bool readOnly = true, bool ignoreQueryFilters = false, Expression<Func<T, object>>[]? includes = null)
+        public virtual async Task<List<T>> GetAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? filter = null, bool readOnly = true, bool ignoreQueryFilters = false, Expression<Func<T, object>>[]? includes = null)
         {
             IQueryable<T> query = _dbSet.AsQueryable();
 
@@ -167,6 +168,16 @@ namespace Foody.Infrastructure.Persistence.Repository
            if(readOnly) query = query.AsNoTracking();
 
            return await query.ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<T>> BulkInsertAsync(List<T> entities, CancellationToken cancellationToken)
+        {
+            using (_context)
+            {
+                await _context.BulkInsertAsync(entities, cancellationToken: cancellationToken);
+            }
+
+            return entities;
         }
     }
 }

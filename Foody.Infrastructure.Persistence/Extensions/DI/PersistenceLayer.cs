@@ -1,4 +1,5 @@
 ﻿using Foody.Core.Application.Interfaces;
+using Foody.Core.Domain.Entities;
 using Foody.Core.Domain.Interfaces;
 using Foody.Infrastructure.Persistence.Models;
 using Foody.Infrastructure.Persistence.Repository;

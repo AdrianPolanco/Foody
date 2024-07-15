@@ -10,8 +10,6 @@ using Foody.Core.Domain.Enums;
 using Foody.Infrastructure.Persistence.Models;
 using Foody.Shared.Constants.Messages;
 using Foody.Shared.Hateoas;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -115,19 +113,6 @@ namespace Foody.API.Controllers
             SignUpUserResponse response = new(appUser.Id, appUser.Name, appUser.Lastname, appUser.UserName!, appUser.Email!, nameof(ApplicationRoles.Waiter), links);
 
             return Ok(response);
-        }
-
-        [Authorize(Policy = "RequireManagerRole")]
-        [HttpGet("forecasts")]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
         }
     }
 }

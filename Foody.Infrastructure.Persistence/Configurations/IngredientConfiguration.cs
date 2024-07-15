@@ -11,6 +11,7 @@ namespace Foody.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Ingredient> builder)
         {
             builder.ToTable("Ingredients");
+            builder.Ignore(i => i.Dishes);
             builder.HasKey(i => i.Id);
             builder.Property(i => i.Name).IsRequired().HasMaxLength(50);
             builder.HasIndex(i => i.Name).IsUnique();

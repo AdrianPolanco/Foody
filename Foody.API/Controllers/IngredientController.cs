@@ -1,14 +1,15 @@
-﻿using AutoMapper;
+﻿using Foody.Core.Domain.Interfaces;
+using AutoMapper;
 using Foody.API.Requests.Ingredient;
 using Foody.API.Responses;
 using Foody.Core.Application.Features.Ingredients.Create;
 using Foody.Core.Application.Features.Ingredients.Get;
 using Foody.Core.Application.HATEOAS;
 using Foody.Core.Domain.Entities;
-using Foody.Core.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Foody.Shared.Hateoas;
 
 
 namespace Foody.API.Controllers
@@ -21,14 +22,14 @@ namespace Foody.API.Controllers
         private readonly ISender _sender;
         private readonly IMapper _mapper;
         private readonly Hateoas _hateoas;
-        private readonly IRepository<Ingredient> _repository;   
+        private readonly IEntityService<Ingredient> _service;   
 
-        public IngredientController(ISender sender, IMapper mapper, Hateoas hateoas, IRepository<Ingredient> repository)
+        public IngredientController(ISender sender, IMapper mapper, Hateoas hateoas, IEntityService<Ingredient> service)
         {
             _sender = sender;
             _mapper = mapper;
             _hateoas = hateoas;
-            _repository = repository;
+            _service = service;
          /*   _hateoas.Routes.Add(new HateoasRoute
             {
                 ControllerName = ControllerContext.ActionDescriptor.ControllerName,
@@ -39,7 +40,7 @@ namespace Foody.API.Controllers
                 }
             });*/
         }
-        [HttpPost(Name = nameof(Create))]
+        [HttpPost(Name = $"{ControllersConstants.INGREDIENTS}/{nameof(Create)}")]
         public async Task<IActionResult> Create([FromBody] CreateIngredientRequest request)
         {
             _hateoas.ActionName = ControllerContext.ActionDescriptor.ActionName;
@@ -54,7 +55,7 @@ namespace Foody.API.Controllers
             return CreatedAtAction(nameof(Create), response);
         }
 
-        [HttpGet("{id}", Name = nameof(GetById))]
+        [HttpGet("{id}", Name = $"{ControllersConstants.INGREDIENTS}/{nameof(GetById)}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             GetIngredientByIdQuery query = new GetIngredientByIdQuery(id);
@@ -66,15 +67,15 @@ namespace Foody.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet(Name = nameof(Get))]
+        [HttpGet(Name = $"{ControllersConstants.INGREDIENTS}/{nameof(Get)}")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            List<Ingredient> ingredients = await _repository.Get(cancellationToken: cancellationToken, filter: null, readOnly: true, ignoreQueryFilters: false, includes: null);   
+            List<Ingredient> ingredients = await _service.Get(cancellationToken: cancellationToken, filter: null, readOnly: true, ignoreQueryFilters: false, includes: null);   
 
             return Ok(ingredients);
         }
 
-        [HttpGet("pages", Name = nameof(GetPages))]
+        [HttpGet("pages", Name = $"{ControllersConstants.INGREDIENTS}/{nameof(GetPages)}")]
         public async Task<IActionResult> GetPages(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5, bool includeFurtherData = false, bool readOnly = false)
         {
             GetIngredientsQuery query = new GetIngredientsQuery(cursor, isNextPage, pageSize, includeFurtherData, readOnly);
@@ -84,18 +85,18 @@ namespace Foody.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}", Name = nameof(Update))]
+        [HttpPut("{id}", Name = $"{ControllersConstants.INGREDIENTS}/{nameof(Update)}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateIngredientRequest request, CancellationToken cancellationToken)
         {
             if(!ModelState.IsValid) return BadRequest(request);
 
-            Ingredient? ingredient = await _repository.GetByIdAsync(id, cancellationToken);
+            Ingredient? ingredient = await _service.GetByIdAsync(id, cancellationToken);
 
             if(ingredient is null) return NotFound();
 
             ingredient.Name = request.Name;
 
-            Ingredient updatedIngredient = await _repository.UpdateAsync(ingredient, cancellationToken);
+            Ingredient updatedIngredient = await _service.UpdateAsync(ingredient, cancellationToken);
 
             return Ok(updatedIngredient);
         }

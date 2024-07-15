@@ -2,7 +2,7 @@
 
 namespace Foody.API.Requests.Ingredient
 {
-    public class CreateIngredientRequest
+    public record CreateIngredientRequest
     {
         [Required]
         [MinLength(3, ErrorMessage = "No se permiten ingredientes con menos de 3 letras en su nombre")]

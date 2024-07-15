@@ -19,7 +19,7 @@ namespace Foody.Core.Application.Features.Ingredients.Get
             List<Ingredient> ingredients = await _repository
                 .GetByPagesAsync(cancellationToken: cancellationToken, cursor: request.LastId, isNextPage: request.IsNextPage, readOnly: request.ReadOnly, pageSize: request.PageSize, includes: null);
 
-            var firstIngredientList = await _repository.Get(cancellationToken: cancellationToken, filter: null, readOnly: true, ignoreQueryFilters: false, includes: null);
+            var firstIngredientList = await _repository.GetAsync(cancellationToken: cancellationToken, filter: null, readOnly: true, ignoreQueryFilters: false, includes: null);
 
             var firstIngredient = firstIngredientList.FirstOrDefault();
 

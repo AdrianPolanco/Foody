@@ -4,6 +4,7 @@ using Foody.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Foody.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240715162937_ManyToManyDishesIngredientsModified")]
+    partial class ManyToManyDishesIngredientsModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace Foody.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DishIngredients", b =>
+                {
+                    b.Property<Guid>("DishId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("DishId", "IngredientId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("DishIngredients");
+                });
 
             modelBuilder.Entity("Foody.Core.Domain.Entities.Dish", b =>
                 {
@@ -53,35 +71,6 @@ namespace Foody.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Dishes", (string)null);
-                });
-
-            modelBuilder.Entity("Foody.Core.Domain.Entities.DishIngredient", b =>
-                {
-                    b.Property<Guid>("DishId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IngredientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DishId", "IngredientId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("DishesIngredients", (string)null);
                 });
 
             modelBuilder.Entity("Foody.Core.Domain.Entities.Ingredient", b =>
@@ -567,23 +556,19 @@ namespace Foody.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Foody.Core.Domain.Entities.DishIngredient", b =>
+            modelBuilder.Entity("DishIngredients", b =>
                 {
-                    b.HasOne("Foody.Core.Domain.Entities.Dish", "Dish")
-                        .WithMany("DishesIngredients")
+                    b.HasOne("Foody.Core.Domain.Entities.Dish", null)
+                        .WithMany()
                         .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Foody.Core.Domain.Entities.Ingredient", "Ingredient")
-                        .WithMany("DishesIngredients")
+                    b.HasOne("Foody.Core.Domain.Entities.Ingredient", null)
+                        .WithMany()
                         .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Dish");
-
-                    b.Navigation("Ingredient");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -635,16 +620,6 @@ namespace Foody.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Foody.Core.Domain.Entities.Dish", b =>
-                {
-                    b.Navigation("DishesIngredients");
-                });
-
-            modelBuilder.Entity("Foody.Core.Domain.Entities.Ingredient", b =>
-                {
-                    b.Navigation("DishesIngredients");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,7 +2,7 @@
 
 namespace Foody.API.Requests.Ingredient
 {
-    public class UpdateIngredientRequest
+    public record UpdateIngredientRequest
     {
 
         [Required(ErrorMessage = "Este campo es requerido")]

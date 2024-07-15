@@ -4,6 +4,7 @@ using Foody.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Foody.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240715173748_ChangingDishes")]
+    partial class ChangingDishes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,6 +55,9 @@ namespace Foody.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Dishes", (string)null);
                 });
 
@@ -74,14 +80,16 @@ namespace Foody.Infrastructure.Persistence.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("DishId", "IngredientId");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("DishesIngredients", (string)null);
+                    b.ToTable("DishIngredients", (string)null);
                 });
 
             modelBuilder.Entity("Foody.Core.Domain.Entities.Ingredient", b =>
@@ -570,13 +578,13 @@ namespace Foody.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Foody.Core.Domain.Entities.DishIngredient", b =>
                 {
                     b.HasOne("Foody.Core.Domain.Entities.Dish", "Dish")
-                        .WithMany("DishesIngredients")
+                        .WithMany("Ingredients")
                         .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Foody.Core.Domain.Entities.Ingredient", "Ingredient")
-                        .WithMany("DishesIngredients")
+                        .WithMany("Dishes")
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -639,12 +647,12 @@ namespace Foody.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Foody.Core.Domain.Entities.Dish", b =>
                 {
-                    b.Navigation("DishesIngredients");
+                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("Foody.Core.Domain.Entities.Ingredient", b =>
                 {
-                    b.Navigation("DishesIngredients");
+                    b.Navigation("Dishes");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,7 +9,8 @@ namespace Foody.Core.Domain.Entities
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
         public int PeopleQuantity { get; set; }
-        public List<Ingredient> Ingredients { get; set; } = null!;
+        public List<DishIngredient> DishesIngredients { get; set; } = null!;
+        public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
         public DishCategory Category { get; set; }
     }
 }

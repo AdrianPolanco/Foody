@@ -25,7 +25,7 @@ namespace Foody.Core.Application.Services
 
         public async Task<List<T>> Get(CancellationToken cancellationToken, Expression<Func<T, bool>>? filter = null, bool readOnly = true, bool ignoreQueryFilters = false, Expression<Func<T, object>>[]? includes = null)
         {
-            return await _repository.Get(cancellationToken, filter, readOnly, ignoreQueryFilters, includes);
+            return await _repository.GetAsync(cancellationToken, filter, readOnly, ignoreQueryFilters, includes);
         }
 
         public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool readOnly = false, bool ignoreQueryFilters = false, params Expression<Func<T, object>>[] includes)

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Foody.API.Requests;
+using Foody.API.Requests.Dishes;
 using Foody.API.Requests.Ingredient;
 using Foody.API.Requests.Users;
+using Foody.Core.Application.Features.Dishes;
 using Foody.Core.Application.Features.Ingredients.Create;
 using Foody.Infrastructure.Persistence.Models;
 
@@ -21,6 +23,13 @@ namespace Foody.API.Mappers
 
             CreateMap<CreateIngredientRequest, CreateIngredientCommand>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<CreateDishRequest, CreateDishCommand>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.PeopleQuantity, opt => opt.MapFrom(src => src.PeopleQuantity))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.Ingredients));
         }
     }
 }

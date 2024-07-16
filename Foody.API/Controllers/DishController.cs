@@ -9,13 +9,15 @@ using Foody.Core.Domain.Entities;
 using Foody.Core.Domain.Interfaces;
 using Foody.Shared.Hateoas;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq.Expressions;
+
 
 namespace Foody.API.Controllers
 {
     [Route("api/dishes")]
     [ApiController]
+    [Authorize(Policy = "RequireManagerRole")]
     public class DishController(ISender sender, IMapper mapper, IEntityService<Dish> genericService) : ControllerBase
     {
         [HttpPost(Name = $"{ControllersConstants.DISHES}/{nameof(Create)}")]

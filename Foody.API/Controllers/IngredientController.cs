@@ -11,14 +11,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Foody.Shared.Hateoas;
 using Foody.Core.Application.Features.Common;
-using System.Linq.Expressions;
-
 
 namespace Foody.API.Controllers
 {
     [ApiController]
     [Route("api/ingredients")]
-   // [Authorize(Policy = "RequireManagerRole")]
+    [Authorize(Policy = "RequireManagerRole")]
     public class IngredientController : ControllerBase
     {
         private readonly ISender _sender;

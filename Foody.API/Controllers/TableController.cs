@@ -3,6 +3,7 @@ using Foody.API.Requests.Tables;
 using Foody.Core.Application.Features.Common;
 using Foody.Core.Application.Features.Table.Create;
 using Foody.Core.Application.Features.Tables.GetById;
+using Foody.Core.Application.Features.Tables.GetPendingOrders;
 using Foody.Core.Application.Features.Tables.Update;
 using Foody.Core.Application.Features.Tables.UpdateStatus;
 using Foody.Core.Domain.Entities;
@@ -109,6 +110,25 @@ namespace Foody.API.Controllers
             if(result is null) return NotFound();
 
             return NoContent();
+        }
+
+        [HttpGet("{id}/orders", Name = $"{ControllersConstants.TABLES}/{nameof(GetOrders)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [SwaggerOperation(Summary = "Obtener pedidos en proceso de una mesa", Description = "Obtiene los pedidos pendientes de una mesa por su id")]
+        //[Authorize(Policy = "RequireWaiterRole")]
+        public async Task<IActionResult> GetOrders([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            var query = new GetPendingOrdersQuery(id);
+
+            GetPendingOrdersQueryResult result = await sender.Send(query, cancellationToken);
+
+            if(result.TotalPendingOrders < 1) return NoContent();
+
+            return Ok(result);
         }
     }
 }

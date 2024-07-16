@@ -66,6 +66,12 @@ namespace Foody.Core.Application.Mappers
                 .ForCtorParam("State", opt => opt.MapFrom(src => src.State))
                 .ForCtorParam("CreatedAt", opt => opt.MapFrom(src => src.CreatedAt));
 
+            CreateMap<Order, PlainOrderDto>()
+                .ForCtorParam("Id", opt => opt.MapFrom(src => src.Id))
+                .ForCtorParam("Dishes", opt => opt.MapFrom(src => src.Dishes))
+                .ForCtorParam("Subtotal", opt => opt.MapFrom(src => src.Subtotal))
+                .ForCtorParam("State", opt => opt.MapFrom(src => src.State))
+                .ForCtorParam("CreatedAt", opt => opt.MapFrom(src => src.CreatedAt));
         }
     }
 }

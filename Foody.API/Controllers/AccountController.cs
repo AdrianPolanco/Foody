@@ -60,6 +60,11 @@ namespace Foody.API.Controllers
 
             User user = _mapper.Map<User>(appUser);
 
+            var roles = await _userManager.GetRolesAsync(appUser);
+
+            if(roles.Contains("Manager")) user.Roles.Add(ApplicationRoles.Manager);
+            if(roles.Contains("Waiter")) user.Roles.Add(ApplicationRoles.Waiter);
+
             string token = _jwtGenerator.Generate(user);
 
             LoginResponse response = new LoginResponse(token);

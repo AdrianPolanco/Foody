@@ -10,6 +10,6 @@ namespace Foody.Core.Application.Interfaces
         where TResponse : GetQueryResult<TEntity>
         where TQuery : GetQuery<TEntity>
     {
-        Task<GetQueryResult<TEntity>> GetPage(TQuery query, CancellationToken cancellationToken);
+        Task<GetQueryResult<TEntity>> GetPageAsync(TQuery query, CancellationToken cancellationToken);
     }
 }

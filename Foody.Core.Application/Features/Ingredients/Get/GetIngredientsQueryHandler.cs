@@ -48,7 +48,7 @@ namespace Foody.Core.Application.Features.Ingredients.Get
             return new GetIngredientsQueryResult(Data: ingredients, IsFirstPage: isFirstPage, NextId: nextId, PreviousId: previousId);*/
 
             //Refactorizado y encapsulado en PaginationService para poder reutilizarlo en otras consultas
-           return await _paginationService.GetPage(request, cancellationToken);
+           return await _paginationService.GetPageAsync(request, cancellationToken);
         }
     }
 }

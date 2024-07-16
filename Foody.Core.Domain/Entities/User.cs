@@ -8,6 +8,6 @@ namespace Foody.Core.Domain.Entities
         public string Name { get; set; } = null!;
         public string Lastname { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public ApplicationRoles Role { get; set; }
+        public List<ApplicationRoles> Roles { get; set; } = new List<ApplicationRoles>();
     }
 }

@@ -18,7 +18,7 @@ namespace Foody.Core.Application.Services
             _repository = repository;
         }
 
-        public async Task<GetQueryResult<TEntity>> GetPage(TQuery query, CancellationToken cancellationToken)
+        public async Task<GetQueryResult<TEntity>> GetPageAsync(TQuery query, CancellationToken cancellationToken)
         {
             List<TEntity> entities;
             entities = await _repository.GetByPagesAsync(cancellationToken: cancellationToken, cursor: query.LastId, isNextPage: query.IsNextPage, readOnly: true, pageSize: query.PageSize);

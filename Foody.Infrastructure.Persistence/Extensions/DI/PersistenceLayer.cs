@@ -21,12 +21,6 @@ namespace Foody.Infrastructure.Persistence.Extensions.DI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("IdentityDatabase")), ServiceLifetime.Scoped);
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("RequireManagerRole", policy => policy.RequireRole("Manager"));
-                options.AddPolicy("RequireWaiterRole", policy => policy.RequireRole("Waiter"));
-            });
-
             // Configurar Identity sin roles usando PooledDbContextFactory
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
             {
@@ -63,6 +57,12 @@ namespace Foody.Infrastructure.Persistence.Extensions.DI
                         RequireExpirationTime = true
                     };
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireManagerRole", policy => policy.RequireRole("Manager"));
+                options.AddPolicy("RequireWaiterRole", policy => policy.RequireRole("Waiter"));
+            });
 
             services.AddScoped<IJwtGenerator, JwtTokenGenerator>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

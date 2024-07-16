@@ -12,7 +12,7 @@ namespace Foody.Core.Application.Features.Dishes.Get
     {
         public async Task<GetQueryResult<Dish>> Handle(GetQuery<Dish> request, CancellationToken cancellationToken)
         {
-            return await paginationService.GetPage(request, cancellationToken);
+            return await paginationService.GetPageAsync(request, cancellationToken);
 
             //Omitido por motivos de simplicidad y tiempo
         /*    List<Guid> dishesIds = result.Data.Select(d => d.Id).ToList();

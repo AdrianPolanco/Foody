@@ -7,7 +7,7 @@ namespace Foody.Core.Application.Interfaces.MediatR.CQRS.Commands
     {
     }
 
-    public interface ICommand<out TResponse> : IRequest<TResponse> where TResponse : notnull
+    public interface ICommand<out TResponse> : IRequest<TResponse>
     {
     }
 }

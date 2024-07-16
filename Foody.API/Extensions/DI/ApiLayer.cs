@@ -52,6 +52,8 @@ namespace Foody.API.Extensions.DI
                             new string[]{}
                         }
                     });
+
+                option.EnableAnnotations();
             });
 
             services.AddHttpContextAccessor();

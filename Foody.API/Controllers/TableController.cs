@@ -4,8 +4,10 @@ using Foody.Core.Application.Features.Common;
 using Foody.Core.Application.Features.Table.Create;
 using Foody.Core.Application.Features.Tables.GetById;
 using Foody.Core.Application.Features.Tables.Update;
+using Foody.Core.Application.Features.Tables.UpdateStatus;
 using Foody.Core.Application.Interfaces;
 using Foody.Core.Domain.Entities;
+using Foody.Core.Domain.Enums;
 using Foody.Shared.Hateoas;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -80,7 +82,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [SwaggerOperation(Summary = "Obtener mesa", Description = "Obtiene una mesa por su id")]
-       // [Authorize]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var query = new GetTableByIdQuery(id);
@@ -90,6 +92,25 @@ namespace Foody.API.Controllers
             if(table is null) return NoContent();
 
             return Ok(table);
+        }
+
+        [HttpPut("{id}/state", Name = $"{ControllersConstants.TABLES}/{nameof(ChangeState)}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [Authorize(Policy = "RequireWaiterRole")]
+        public async Task<IActionResult> ChangeState([FromRoute] Guid id, 
+            [FromQuery][SwaggerParameter(Description = "1: Disponible<br>2: En atención<br>3: Atendida")] TableState status, CancellationToken cancellationToken)
+        {
+          UpdateTableStatusCommand command = new UpdateTableStatusCommand(id, status);
+
+            DinnerTable? result = await sender.Send(command, cancellationToken);
+
+            if(result is null) return NotFound();
+
+            return NoContent();
         }
     }
 }

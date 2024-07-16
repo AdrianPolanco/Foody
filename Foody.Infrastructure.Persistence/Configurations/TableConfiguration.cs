@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Foody.Infrastructure.Persistence.Configurations
 {
-    internal class TableConfiguration : IEntityTypeConfiguration<Table>
+    internal class TableConfiguration : IEntityTypeConfiguration<DinnerTable>
     {
-        public void Configure(EntityTypeBuilder<Table> builder)
+        public void Configure(EntityTypeBuilder<DinnerTable> builder)
         {
             builder.HasKey(t => t.Id);
 

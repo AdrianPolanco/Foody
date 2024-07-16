@@ -3,7 +3,7 @@ using Foody.Core.Domain.Enums;
 
 namespace Foody.Core.Domain.Entities
 {
-    public class Table : Entity
+    public class DinnerTable : Entity
     {
         public string Description { get; set; } = null!;
         public int Capacity { get; set; }

@@ -1,10 +1,10 @@
 ﻿
 
 using AutoMapper;
-using Foody.Core.Application.Features;
 using Foody.Core.Application.Features.Dishes.Create;
 using Foody.Core.Application.Features.Dishes.Update;
 using Foody.Core.Application.Features.Ingredients.Create;
+using Foody.Core.Application.Features.Table.Create;
 using Foody.Core.Domain.Entities;
 
 namespace Foody.Core.Application.Mappers
@@ -38,7 +38,7 @@ namespace Foody.Core.Application.Mappers
                 .ForMember(dest => dest.DishesIngredients, opt => opt.Ignore())
                 .ForMember(dest => dest.Ingredients, opt => opt.Ignore());
 
-            CreateMap<CreateTableCommand, Table>()
+            CreateMap<CreateTableCommand, DinnerTable>()
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Capacity, opt => opt.MapFrom(src => src.Seats))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State));

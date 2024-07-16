@@ -2,7 +2,7 @@
 
 namespace Foody.Core.Application.Features.Common
 {
-    public abstract record GetQuery<T>(Guid? LastId, bool? IsNextPage, int PageSize = 5, bool IncludeFurtherData = false, bool ReadOnly = true) : IQuery<GetQueryResult<T>>;
+    public record GetQuery<T>(Guid? LastId, bool? IsNextPage, int PageSize = 5, bool IncludeFurtherData = false, bool ReadOnly = true) : IQuery<GetQueryResult<T>>;
 
-    public abstract record GetQueryResult<T>(List<T> Data, Guid? PreviousId, Guid? NextId, bool IsFirstPage);
+    public record GetQueryResult<T>(List<T> Data, Guid? PreviousId, Guid? NextId, bool IsFirstPage);
 }

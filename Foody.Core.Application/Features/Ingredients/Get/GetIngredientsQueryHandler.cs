@@ -1,22 +1,27 @@
-﻿using Foody.Core.Application.Interfaces.MediatR.CQRS.Queries;
+﻿using Foody.Core.Application.Features.Common;
+using Foody.Core.Application.Interfaces;
+using Foody.Core.Application.Interfaces.MediatR.CQRS.Queries;
 using Foody.Core.Domain.Entities;
 using Foody.Core.Domain.Interfaces;
 
 
 namespace Foody.Core.Application.Features.Ingredients.Get
 {
-    public class GetIngredientsQueryHandler : IQueryHandler<GetIngredientsQuery, GetIngredientsQueryResult>
+    public class GetIngredientsQueryHandler : IQueryHandler<GetIngredientsQuery, GetQueryResult<Ingredient>>
     {
         private readonly IRepository<Ingredient> _repository;
+        //private readonly IPaginationService<GetQuery<Ingredient>, GetQueryResult<Ingredient>, Ingredient> _paginationService;
+        private readonly IPaginationService<GetIngredientsQuery, GetIngredientsQueryResult, Ingredient> _paginationService;
 
-        public GetIngredientsQueryHandler(IRepository<Ingredient> repository)
+        public GetIngredientsQueryHandler(IRepository<Ingredient> repository, IPaginationService<GetIngredientsQuery, GetIngredientsQueryResult, Ingredient> paginationService)
         {
             _repository = repository;
+            _paginationService = paginationService;
         }
 
-        public async Task<GetIngredientsQueryResult> Handle(GetIngredientsQuery request, CancellationToken cancellationToken)
+        public async Task<GetQueryResult<Ingredient>> Handle(GetIngredientsQuery request, CancellationToken cancellationToken)
         {
-            List<Ingredient> ingredients = await _repository
+           /* List<Ingredient> ingredients = await _repository
                 .GetByPagesAsync(cancellationToken: cancellationToken, cursor: request.LastId, isNextPage: request.IsNextPage, readOnly: request.ReadOnly, pageSize: request.PageSize, includes: null);
 
             var firstIngredientList = await _repository.GetAsync(cancellationToken: cancellationToken, filter: null, readOnly: true, ignoreQueryFilters: false, includes: null);
@@ -40,7 +45,10 @@ namespace Foody.Core.Application.Features.Ingredients.Get
 
             Guid? previousId = ingredients.Count > 0 && !isFirstPage ? ingredients.First().Id : null;
 
-            return new GetIngredientsQueryResult(Data: ingredients, IsFirstPage: isFirstPage, NextId: nextId, PreviousId: previousId);
+            return new GetIngredientsQueryResult(Data: ingredients, IsFirstPage: isFirstPage, NextId: nextId, PreviousId: previousId);*/
+
+            //Refactorizado y encapsulado en PaginationService para poder reutilizarlo en otras consultas
+           return await _paginationService.GetPage(request, cancellationToken);
         }
     }
 }

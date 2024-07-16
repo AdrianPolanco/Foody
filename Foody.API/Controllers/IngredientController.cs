@@ -10,13 +10,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Foody.Shared.Hateoas;
+using Foody.Core.Application.Features.Common;
 
 
 namespace Foody.API.Controllers
 {
     [ApiController]
     [Route("api/ingredients")]
-    [Authorize(Policy = "RequireManagerRole")]
+   // [Authorize(Policy = "RequireManagerRole")]
     public class IngredientController : ControllerBase
     {
         private readonly ISender _sender;
@@ -80,7 +81,7 @@ namespace Foody.API.Controllers
         {
             GetIngredientsQuery query = new GetIngredientsQuery(cursor, isNextPage, pageSize, includeFurtherData, readOnly);
 
-            GetIngredientsQueryResult result = await _sender.Send<GetIngredientsQueryResult>(query, cancellationToken);
+            GetQueryResult<Ingredient> result = await _sender.Send<GetQueryResult<Ingredient>>(query, cancellationToken);
 
             return Ok(result);
         }

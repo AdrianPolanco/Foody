@@ -2,6 +2,7 @@
 using AutoMapper;
 using Foody.API.Requests.Dishes;
 using Foody.API.Responses;
+using Foody.Core.Application.Features.Common;
 using Foody.Core.Application.Features.Dishes.Create;
 using Foody.Core.Application.Features.Dishes.Update;
 using Foody.Core.Domain.Entities;
@@ -24,6 +25,8 @@ namespace Foody.API.Controllers
             CreateDishCommand command =mapper.Map<CreateDishCommand>(request);
 
             CreateDishCommandResult result = await sender.Send(command, cancellationToken);
+
+            if (result.StatusCode == 400) return BadRequest(result.Message);
 
             CreateDishResponse response = new CreateDishResponse(result);
 
@@ -49,6 +52,28 @@ namespace Foody.API.Controllers
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {         
             var result = await genericService.Get(cancellationToken: cancellationToken, filter: null, readOnly: true);
+
+            if(result.Count == 0) return NoContent();
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}", Name = $"{ControllersConstants.DISHES}/{nameof(GetById)}")]
+        public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+        {
+            var result = await genericService.GetByIdAsync(id, cancellationToken, true);
+
+            if(result is null) return NoContent();
+
+            return Ok(result);
+        }
+
+        [HttpGet("pages", Name = $"{ControllersConstants.DISHES}/{nameof(GetPages)}")]
+        public async Task<IActionResult> GetPages(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5, bool includeFurtherData = false)
+        {
+            GetQuery<Dish> query = new GetQuery<Dish>(cursor, isNextPage, pageSize, includeFurtherData);
+
+            GetQueryResult<Dish> result = await sender.Send(query, cancellationToken);
 
             return Ok(result);
         }

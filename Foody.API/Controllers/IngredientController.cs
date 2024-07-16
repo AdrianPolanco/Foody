@@ -78,9 +78,9 @@ namespace Foody.API.Controllers
         }
 
         [HttpGet("pages", Name = $"{ControllersConstants.INGREDIENTS}/{nameof(GetPages)}")]
-        public async Task<IActionResult> GetPages(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5, bool readOnly = false)
+        public async Task<IActionResult> GetPages(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5)
         {
-            GetQuery<Ingredient> query = new GetQuery<Ingredient>(cursor, isNextPage, pageSize, readOnly);
+            GetQuery<Ingredient> query = new GetQuery<Ingredient>(cursor, isNextPage, pageSize);
 
             GetQueryResult<Ingredient> result = await _sender.Send(query, cancellationToken);
 

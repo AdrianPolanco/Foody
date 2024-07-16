@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Foody.Shared\Foody.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Dishes\Get\" />
-  </ItemGroup>
-
 </Project>

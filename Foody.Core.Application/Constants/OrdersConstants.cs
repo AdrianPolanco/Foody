@@ -9,5 +9,6 @@ namespace Foody.Core.Application.Constants
         public const string TableNotFound = "Mesa no encontrada";
         public const string UpdateOrderSuccess = "Orden actualizada satisfactoriamente";
         public const string OrderNotFound = "Orden no encontrada";
+        public const string OrderQuerySuccess = "Orden encontrada satisfactoriamente";
     }
 }

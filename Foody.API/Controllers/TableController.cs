@@ -55,7 +55,7 @@ namespace Foody.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet(Name = $"{ControllersConstants.TABLES}/{nameof(Get)}")]
+        [HttpGet("pages", Name = $"{ControllersConstants.TABLES}/{nameof(Get)}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

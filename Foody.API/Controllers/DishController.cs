@@ -17,7 +17,7 @@ namespace Foody.API.Controllers
 {
     [Route($"api/{ControllersConstants.DISHES}")]
     [ApiController]
-    [Authorize(Policy = "RequireManagerRole")]
+   // [Authorize(Policy = "RequireManagerRole")]
     public class DishController(ISender sender, IMapper mapper, IEntityService<Dish> genericService) : ControllerBase
     {
         [HttpPost(Name = $"{ControllersConstants.DISHES}/{nameof(Create)}")]
@@ -53,7 +53,7 @@ namespace Foody.API.Controllers
         [HttpGet(Name = $"{ControllersConstants.DISHES}/{nameof(Get)}")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {         
-            var result = await genericService.Get(cancellationToken: cancellationToken, filter: null, readOnly: true);
+            var result = await genericService.GetAsync(cancellationToken: cancellationToken, filter: null, readOnly: true);
 
             if(result.Count == 0) return NoContent();
 

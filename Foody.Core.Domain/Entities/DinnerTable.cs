@@ -8,5 +8,6 @@ namespace Foody.Core.Domain.Entities
         public string Description { get; set; } = null!;
         public int Capacity { get; set; }
         public TableState State { get; set; }
+        public List<Order> Orders { get; set; } = null!;
     }
 }

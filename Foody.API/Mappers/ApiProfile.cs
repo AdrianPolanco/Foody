@@ -7,6 +7,7 @@ using Foody.API.Requests.Users;
 using Foody.Core.Application.Features.Dishes.Create;
 using Foody.Core.Application.Features.Dishes.Update;
 using Foody.Core.Application.Features.Ingredients.Create;
+using Foody.Core.Application.Features.Orders.Create;
 using Foody.Core.Application.Features.Table.Create;
 using Foody.Core.Application.Features.Tables.Update;
 using Foody.Core.Domain.Enums;
@@ -50,6 +51,10 @@ namespace Foody.API.Mappers
             CreateMap<CommandTableRequest, UpdateTableCommand>()
                 .ForCtorParam("Description", opt => opt.MapFrom(src => src.Description))
                 .ForCtorParam("Seats", opt => opt.MapFrom(src => src.Seats));
+
+            CreateMap<CreateOrderRequest, CreateOrderCommand>()
+                .ForCtorParam("TableId", opt => opt.MapFrom(src => src.TableId))
+                .ForCtorParam("DishesId", opt => opt.MapFrom(src => src.DishesId));
         }
     }
 }

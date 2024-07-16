@@ -5,7 +5,6 @@ using Foody.Core.Application.Features.Table.Create;
 using Foody.Core.Application.Features.Tables.GetById;
 using Foody.Core.Application.Features.Tables.Update;
 using Foody.Core.Application.Features.Tables.UpdateStatus;
-using Foody.Core.Application.Interfaces;
 using Foody.Core.Domain.Entities;
 using Foody.Core.Domain.Enums;
 using Foody.Shared.Hateoas;
@@ -18,7 +17,6 @@ namespace Foody.API.Controllers
 {
     [Route($"api/{ControllersConstants.TABLES}")]
     [ApiController]
-   // [Authorize(Policy = "RequireWaiterRole")]
     public class TableController(ISender sender, IMapper mapper) : ControllerBase
     {
         [HttpPost(Name = $"{ControllersConstants.TABLES}/{nameof(Create)}")]
@@ -27,7 +25,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Policy = "RequireManagerRole")]
+       // [Authorize(Policy = "RequireManagerRole")]
         public async Task<IActionResult> Create([FromBody] CommandTableRequest request, CancellationToken cancellationToken)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);

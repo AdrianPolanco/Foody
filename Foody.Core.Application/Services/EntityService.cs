@@ -23,7 +23,7 @@ namespace Foody.Core.Application.Services
             await _repository.DeleteAsync(id, cancellationToken);
         }
 
-        public async Task<List<T>> Get(CancellationToken cancellationToken, Expression<Func<T, bool>>? filter = null, bool readOnly = true, bool ignoreQueryFilters = false, Expression<Func<T, object>>[]? includes = null)
+        public async Task<List<T>> GetAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? filter = null, bool readOnly = true, bool ignoreQueryFilters = false, Expression<Func<T, object>>[]? includes = null)
         {
             return await _repository.GetAsync(cancellationToken, filter, readOnly, ignoreQueryFilters, includes);
         }

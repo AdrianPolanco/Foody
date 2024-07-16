@@ -13,6 +13,7 @@ namespace Foody.Infrastructure.Persistence.Configurations
             builder.HasKey(d => d.Id);
 
             builder.Ignore(d => d.Ingredients);
+            builder.Ignore(d => d.Orders);
 
             builder.Property(d => d.Name)
                 .IsRequired()

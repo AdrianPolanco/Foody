@@ -70,7 +70,7 @@ namespace Foody.API.Controllers
         [HttpGet(Name = $"{ControllersConstants.INGREDIENTS}/{nameof(Get)}")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            List<Ingredient> ingredients = await _service.Get(cancellationToken: cancellationToken, filter: null, readOnly: true, ignoreQueryFilters: false, includes: null);   
+            List<Ingredient> ingredients = await _service.GetAsync(cancellationToken: cancellationToken, filter: null, readOnly: true, ignoreQueryFilters: false, includes: null);   
 
             return Ok(ingredients);
         }

@@ -1,6 +1,7 @@
 ﻿
 
 using AutoMapper;
+using Foody.Core.Application.Dtos;
 using Foody.Core.Application.Features.Dishes.Create;
 using Foody.Core.Application.Features.Dishes.Update;
 using Foody.Core.Application.Features.Ingredients.Create;
@@ -42,6 +43,29 @@ namespace Foody.Core.Application.Mappers
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Capacity, opt => opt.MapFrom(src => src.Seats))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State));
+
+            CreateMap<Dish, DishDto>()
+                .ForCtorParam("Id", opt => opt.MapFrom(src => src.Id))
+                .ForCtorParam("Name", opt => opt.MapFrom(src => src.Name))
+                .ForCtorParam("Price", opt => opt.MapFrom(src => src.Price))
+                .ForCtorParam("PeopleQuantity", opt => opt.MapFrom(src => src.PeopleQuantity))
+                .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category));
+
+
+            CreateMap<DinnerTable, TableDto>()
+                .ForCtorParam("Id", opt => opt.MapFrom(src => src.Id))
+                .ForCtorParam("Name", opt => opt.MapFrom(src => src.Description))
+                .ForCtorParam("Capacity", opt => opt.MapFrom(src => src.Capacity))
+                .ForCtorParam("State", opt => opt.MapFrom(src => src.State));
+
+            CreateMap<Order, OrderDto>()
+                .ForCtorParam("Id", opt => opt.MapFrom(src => src.Id))
+                .ForCtorParam("Table", opt => opt.MapFrom(src => src.Table))
+                .ForCtorParam("Dishes", opt => opt.MapFrom(src => src.Dishes))
+                .ForCtorParam("Subtotal", opt => opt.MapFrom(src => src.Subtotal))
+                .ForCtorParam("State", opt => opt.MapFrom(src => src.State))
+                .ForCtorParam("CreatedAt", opt => opt.MapFrom(src => src.CreatedAt));
+
         }
     }
 }

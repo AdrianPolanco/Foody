@@ -4,6 +4,7 @@ using Foody.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Foody.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240716164402_RecreationAndOrdersAdded")]
+    partial class RecreationAndOrdersAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,15 +113,16 @@ namespace Foody.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("DishesIngredients", (string)null);
+                    b.ToTable("DishesOrders", (string)null);
                 });
 
             modelBuilder.Entity("Foody.Core.Domain.Entities.DishOrder", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("DishId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -130,19 +134,16 @@ namespace Foody.Infrastructure.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<Guid>("DishId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DishId");
+                    b.HasKey("DishId", "OrderId");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("DishesOrders", (string)null);
+                    b.ToTable("DishesIngredients", (string)null);
                 });
 
             modelBuilder.Entity("Foody.Core.Domain.Entities.Ingredient", b =>
@@ -437,20 +438,20 @@ namespace Foody.Infrastructure.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<Guid>("IdTable")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("TableId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TableId");
+                    b.HasIndex("IdTable");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Foody.Infrastructure.Persistence.Models.ApplicationUser", b =>
@@ -702,7 +703,7 @@ namespace Foody.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("Foody.Core.Domain.Entities.DinnerTable", "Table")
                         .WithMany("Orders")
-                        .HasForeignKey("TableId")
+                        .HasForeignKey("IdTable")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

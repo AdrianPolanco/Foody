@@ -11,6 +11,8 @@ namespace Foody.Core.Domain.Entities
         public int PeopleQuantity { get; set; }
         public DishCategory Category { get; set; }
         public List<DishIngredient> DishesIngredients { get; set; } = null!;
+        public List<DishOrder> DishesOrders { get; set; } = null!;
         public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }

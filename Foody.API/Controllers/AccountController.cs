@@ -17,7 +17,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace Foody.API.Controllers
 {
     [ApiController]
-    [Route("api/accounts")]
+    [Route($"api/{ControllersConstants.ACCOUNTS}")]
     public class AccountController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

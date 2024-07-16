@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Foody.API.Controllers
 {
-    [Route("api/dishes")]
+    [Route($"api/{ControllersConstants.DISHES}")]
     [ApiController]
     [Authorize(Policy = "RequireManagerRole")]
     public class DishController(ISender sender, IMapper mapper, IEntityService<Dish> genericService) : ControllerBase

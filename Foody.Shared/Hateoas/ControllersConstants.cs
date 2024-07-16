@@ -7,5 +7,6 @@ namespace Foody.Shared.Hateoas
        public const string ACCOUNTS = "accounts";
        public const string INGREDIENTS = "ingredients";
        public const string DISHES = "dishes";
+       public const string TABLES = "tables";
     }
 }

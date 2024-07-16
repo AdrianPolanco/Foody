@@ -1,45 +1,30 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Foody.API.Requests.Tables;
+using Foody.Core.Application.Features;
+using Foody.Shared.Hateoas;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Foody.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route($"api/{ControllersConstants.TABLES}")]
     [ApiController]
    // [Authorize(Policy = "RequireWaiterRole")]
-    public class TableController : ControllerBase
+    public class TableController(ISender sender, IMapper mapper) : ControllerBase
     {
-        // GET: api/<TableController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpPost(Name = $"{ControllersConstants.TABLES}/{nameof(Create)}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Create([FromBody] CreateTableRequest request, CancellationToken cancellationToken)
         {
-            return new string[] { "value1", "value2" };
-        }
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+            CreateTableCommand command = mapper.Map<CreateTableCommand>(request);
 
-        // GET api/<TableController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+            CreateTableCommandResult result = await sender.Send(command, cancellationToken);
 
-        // POST api/<TableController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<TableController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<TableController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return CreatedAtAction(nameof(Create), result);
         }
     }
 }

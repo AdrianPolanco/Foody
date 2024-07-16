@@ -15,7 +15,7 @@ using Foody.Core.Application.Features.Common;
 namespace Foody.API.Controllers
 {
     [ApiController]
-    [Route("api/ingredients")]
+    [Route($"api/{ControllersConstants.INGREDIENTS}")]
     [Authorize(Policy = "RequireManagerRole")]
     public class IngredientController : ControllerBase
     {

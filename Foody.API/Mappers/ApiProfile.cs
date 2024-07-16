@@ -2,10 +2,13 @@
 using Foody.API.Requests;
 using Foody.API.Requests.Dishes;
 using Foody.API.Requests.Ingredient;
+using Foody.API.Requests.Tables;
 using Foody.API.Requests.Users;
+using Foody.Core.Application.Features;
 using Foody.Core.Application.Features.Dishes.Create;
 using Foody.Core.Application.Features.Dishes.Update;
 using Foody.Core.Application.Features.Ingredients.Create;
+using Foody.Core.Domain.Enums;
 using Foody.Infrastructure.Persistence.Models;
 
 namespace Foody.API.Mappers
@@ -38,6 +41,11 @@ namespace Foody.API.Mappers
                 .ForCtorParam("PeopleQuantity", opt => opt.MapFrom(src => src.PeopleQuantity))
                 .ForCtorParam("Ingredients", opt => opt.MapFrom(src => src.Ingredients))
                 .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category));
+
+            CreateMap<CreateTableRequest, CreateTableCommand>()
+                .ForCtorParam("Description", opt => opt.MapFrom(src => src.Description))
+                .ForCtorParam("Seats", opt => opt.MapFrom(src => src.Seats))
+                .ForCtorParam("State", opt => opt.MapFrom(src => TableState.Available));
         }
     }
 }

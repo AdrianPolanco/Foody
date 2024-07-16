@@ -1,6 +1,4 @@
-﻿
-
-using Foody.Core.Domain.Entities.Base;
+﻿using Foody.Core.Domain.Entities.Base;
 using Foody.Core.Domain.Enums;
 
 namespace Foody.Core.Domain.Entities

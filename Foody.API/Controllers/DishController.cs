@@ -4,15 +4,18 @@ using Foody.API.Requests.Dishes;
 using Foody.API.Responses;
 using Foody.Core.Application.Features.Dishes.Create;
 using Foody.Core.Application.Features.Dishes.Update;
+using Foody.Core.Domain.Entities;
+using Foody.Core.Domain.Interfaces;
 using Foody.Shared.Hateoas;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace Foody.API.Controllers
 {
     [Route("api/dishes")]
     [ApiController]
-    public class DishController(ISender sender, IMapper mapper) : ControllerBase
+    public class DishController(ISender sender, IMapper mapper, IEntityService<Dish> genericService) : ControllerBase
     {
         [HttpPost(Name = $"{ControllersConstants.DISHES}/{nameof(Create)}")]
         public async Task<IActionResult> Create([FromBody] CreateDishRequest request, CancellationToken cancellationToken)
@@ -40,6 +43,14 @@ namespace Foody.API.Controllers
             UpdateDishResponse response = new UpdateDishResponse(result);
 
             return Ok(response);
+        }
+
+        [HttpGet(Name = $"{ControllersConstants.DISHES}/{nameof(Get)}")]
+        public async Task<IActionResult> Get(CancellationToken cancellationToken)
+        {         
+            var result = await genericService.Get(cancellationToken: cancellationToken, filter: null, readOnly: true);
+
+            return Ok(result);
         }
     }
 }

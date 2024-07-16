@@ -21,6 +21,7 @@ namespace Foody.Infrastructure.Persistence
             builder.ApplyConfiguration(new IngredientConfiguration());
             builder.ApplyConfiguration(new DishConfiguration());
             builder.ApplyConfiguration(new DishIngredientConfiguration());
+            builder.ApplyConfiguration(new TableConfiguration());
             base.OnModelCreating(builder);
         }
 

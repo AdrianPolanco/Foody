@@ -2,6 +2,7 @@
 using Foody.API.Requests.Tables;
 using Foody.Core.Application.Features.Common;
 using Foody.Core.Application.Features.Table.Create;
+using Foody.Core.Application.Features.Tables.GetById;
 using Foody.Core.Application.Features.Tables.Update;
 using Foody.Core.Application.Interfaces;
 using Foody.Core.Domain.Entities;
@@ -21,6 +22,8 @@ namespace Foody.API.Controllers
         [HttpPost(Name = $"{ControllersConstants.TABLES}/{nameof(Create)}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Policy = "RequireManagerRole")]
         public async Task<IActionResult> Create([FromBody] CommandTableRequest request, CancellationToken cancellationToken)
@@ -37,6 +40,8 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Policy = "RequireManagerRole")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CommandTableRequest request, CancellationToken cancellationToken)
@@ -54,9 +59,10 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize]
-        // [Authorize(Roles = "Manager")]
-        [Authorize(Policy = "RequireWaiterRole")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [SwaggerOperation(Summary = "Obtener mesas", Description = "Obtiene las mesas con paginación")]
+        [Authorize]
         public async Task<IActionResult> Get(CancellationToken cancellationToken,Guid? cursor, bool? isNextPage, int pageSize = 5)
         {
             GetQuery<DinnerTable> query = new GetQuery<DinnerTable>(cursor, isNextPage, pageSize);
@@ -65,6 +71,25 @@ namespace Foody.API.Controllers
             if(!tables.Data.Any()) return NoContent();
 
             return Ok(tables);
+        }
+
+        [HttpGet("{id}", Name = $"{ControllersConstants.TABLES}/{nameof(GetById)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [SwaggerOperation(Summary = "Obtener mesa", Description = "Obtiene una mesa por su id")]
+       // [Authorize]
+        public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            var query = new GetTableByIdQuery(id);
+
+            DinnerTable? table = await sender.Send(query, cancellationToken);
+
+            if(table is null) return NoContent();
+
+            return Ok(table);
         }
     }
 }

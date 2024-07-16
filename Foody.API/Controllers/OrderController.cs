@@ -2,6 +2,7 @@
 using Foody.API.Requests.Orders;
 using Foody.Core.Application.Features.Common;
 using Foody.Core.Application.Features.Orders.Create;
+using Foody.Core.Application.Features.Orders.Delete;
 using Foody.Core.Application.Features.Orders.GetById;
 using Foody.Core.Application.Features.Orders.Update;
 using Foody.Core.Domain.Entities;
@@ -86,9 +87,27 @@ namespace Foody.API.Controllers
             GetOrderByIdQuery query = new GetOrderByIdQuery(id, includeFurtherData);
             GetOrderByIdQueryResult result = await sender.Send(query, cancellationToken);
 
-            if (result.Order is null) return NotFound(result);
+            if (result.Order is null) return NoContent();
 
             return Ok(result);
         }
+
+        [HttpDelete("{id}", Name = $"{ControllersConstants.ORDERS}/{nameof(Delete)}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //[Authorize(Policy = "RequireWaiterRole")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            DeleteOrderCommand command = new DeleteOrderCommand(id);
+            DeleteOrderCommandResult result = await sender.Send(command, cancellationToken);
+
+            if (result.StatusCode == StatusCodes.Status404NotFound) return NotFound(result);
+
+            return NoContent();
+        }
+
     }
 }

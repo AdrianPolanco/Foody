@@ -43,7 +43,7 @@ namespace Foody.Infrastructure.Persistence.Repository
                 {
                     var entity = await GetByIdAsync(id, cancellationToken);
                     if (entity is null) return;
-                    if(!softDelete) entity.Deleted = true;
+                    if(softDelete is true) entity.Deleted = true;
                     else _dbSet.Remove(entity);
                     await SaveChangesAsync(cancellationToken);
                     await CommitAsync(cancellationToken);

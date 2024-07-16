@@ -10,5 +10,6 @@ namespace Foody.Core.Application.Constants
         public const string UpdateOrderSuccess = "Orden actualizada satisfactoriamente";
         public const string OrderNotFound = "Orden no encontrada";
         public const string OrderQuerySuccess = "Orden encontrada satisfactoriamente";
+        public const string DeleteOrderSucceed = "Orden eliminada satisfactoriamente";
     }
 }

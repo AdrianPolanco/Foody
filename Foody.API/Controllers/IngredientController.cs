@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Foody.Shared.Hateoas;
 using Foody.Core.Application.Features.Common;
+using System.Linq.Expressions;
 
 
 namespace Foody.API.Controllers
@@ -77,11 +78,11 @@ namespace Foody.API.Controllers
         }
 
         [HttpGet("pages", Name = $"{ControllersConstants.INGREDIENTS}/{nameof(GetPages)}")]
-        public async Task<IActionResult> GetPages(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5, bool includeFurtherData = false, bool readOnly = false)
+        public async Task<IActionResult> GetPages(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5, bool readOnly = false)
         {
-            GetIngredientsQuery query = new GetIngredientsQuery(cursor, isNextPage, pageSize, includeFurtherData, readOnly);
+            GetQuery<Ingredient> query = new GetQuery<Ingredient>(cursor, isNextPage, pageSize, readOnly);
 
-            GetQueryResult<Ingredient> result = await _sender.Send<GetQueryResult<Ingredient>>(query, cancellationToken);
+            GetQueryResult<Ingredient> result = await _sender.Send(query, cancellationToken);
 
             return Ok(result);
         }

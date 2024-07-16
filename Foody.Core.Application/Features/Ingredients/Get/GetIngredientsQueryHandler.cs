@@ -7,19 +7,19 @@ using Foody.Core.Domain.Interfaces;
 
 namespace Foody.Core.Application.Features.Ingredients.Get
 {
-    public class GetIngredientsQueryHandler : IQueryHandler<GetIngredientsQuery, GetQueryResult<Ingredient>>
+    public class GetIngredientsQueryHandler : IQueryHandler<GetQuery<Ingredient>, GetQueryResult<Ingredient>>
     {
         private readonly IRepository<Ingredient> _repository;
         //private readonly IPaginationService<GetQuery<Ingredient>, GetQueryResult<Ingredient>, Ingredient> _paginationService;
-        private readonly IPaginationService<GetIngredientsQuery, GetIngredientsQueryResult, Ingredient> _paginationService;
+        private readonly IPaginationService<GetQuery<Ingredient>, GetQueryResult<Ingredient>, Ingredient> _paginationService;
 
-        public GetIngredientsQueryHandler(IRepository<Ingredient> repository, IPaginationService<GetIngredientsQuery, GetIngredientsQueryResult, Ingredient> paginationService)
+        public GetIngredientsQueryHandler(IRepository<Ingredient> repository, IPaginationService<GetQuery<Ingredient>, GetQueryResult<Ingredient>, Ingredient> paginationService)
         {
             _repository = repository;
             _paginationService = paginationService;
         }
 
-        public async Task<GetQueryResult<Ingredient>> Handle(GetIngredientsQuery request, CancellationToken cancellationToken)
+        public async Task<GetQueryResult<Ingredient>> Handle(GetQuery<Ingredient> request, CancellationToken cancellationToken)
         {
            /* List<Ingredient> ingredients = await _repository
                 .GetByPagesAsync(cancellationToken: cancellationToken, cursor: request.LastId, isNextPage: request.IsNextPage, readOnly: request.ReadOnly, pageSize: request.PageSize, includes: null);

@@ -8,5 +8,6 @@ namespace Foody.Core.Application.Constants
         public const string CreateOrderInvalid = "Datos inválidos. Asegurate de que todos los campos estan llenos y que los id de todos los platos que conforman la orden existan realmente.";
         public const string TableNotFound = "Mesa no encontrada";
         public const string UpdateOrderSuccess = "Orden actualizada satisfactoriamente";
+        public const string OrderNotFound = "Orden no encontrada";
     }
 }

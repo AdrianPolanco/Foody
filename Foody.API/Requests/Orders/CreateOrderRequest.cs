@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Foody.API.Requests
+namespace Foody.API.Requests.Orders
 {
     public class CreateOrderRequest : IValidatableObject
     {

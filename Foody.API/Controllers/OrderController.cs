@@ -10,11 +10,13 @@ using Foody.Shared.Hateoas;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Foody.API.Controllers
 {
     [Route($"api/{ControllersConstants.ORDERS}")]
     [ApiController]
+    [Authorize(Policy = "RequireWaiterRole")]
     public class OrderController(ISender sender, IMapper mapper) : ControllerBase
     {
         [HttpPost(Name = $"{ControllersConstants.ORDERS}/{nameof(Create)}")]
@@ -23,7 +25,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-       // [Authorize(Policy = "RequireWaiterRole")]
+        [SwaggerOperation(Summary = "Crear orden", Description = "Crea una orden con un varios platillos y un precio calculado")]
         public async Task<IActionResult> Create([FromBody] CreateOrderRequest request, CancellationToken cancellationToken)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
@@ -44,7 +46,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Policy = "RequireWaiterRole")]
+        [SwaggerOperation(Summary = "Actualizar orden", Description = "Actualiza los platillos de una orden, y a partir de los nuevos platillos se recalcula el subtotal")]
         public async Task<IActionResult> Update([FromBody] UpdateOrderRequest request, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -64,7 +66,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Policy = "RequireWaiterRole")]
+        [SwaggerOperation(Summary = "Obtener ordenes", Description = "Obtiene las ordenes de forma paginada")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5)
         {
             GetQuery<Order> query = new GetQuery<Order>(cursor,isNextPage, pageSize);
@@ -81,7 +83,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Policy = "RequireWaiterRole")]
+        [SwaggerOperation(Summary = "Obtener orden por id", Description = "Obtiene una orden por su id")]
         public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool includeFurtherData, CancellationToken cancellationToken)
         {
             GetOrderByIdQuery query = new GetOrderByIdQuery(id, includeFurtherData);
@@ -98,7 +100,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Policy = "RequireWaiterRole")]
+        [SwaggerOperation(Summary = "Eliminar orden", Description = "Elimina una orden por su id")]
         public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             DeleteOrderCommand command = new DeleteOrderCommand(id);

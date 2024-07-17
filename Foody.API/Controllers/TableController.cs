@@ -26,7 +26,8 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-       // [Authorize(Policy = "RequireManagerRole")]
+        [SwaggerOperation(Summary = "Crear mesa", Description = "Crea una mesa con una descripción y cantidad de personas")]
+        [Authorize(Policy = "RequireManagerRole")]
         public async Task<IActionResult> Create([FromBody] CommandTableRequest request, CancellationToken cancellationToken)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
@@ -44,6 +45,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Actualizar mesa", Description = "Actualiza la descripcion y la cantidad de personas de una mesa por su id")]
         [Authorize(Policy = "RequireManagerRole")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CommandTableRequest request, CancellationToken cancellationToken)
         {
@@ -99,6 +101,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [SwaggerOperation(Summary = "Cambiar estado de mesa", Description = "Cambia el estado de una mesa por su id")]
         [Authorize(Policy = "RequireWaiterRole")]
         public async Task<IActionResult> ChangeState([FromRoute] Guid id, 
             [FromQuery][SwaggerParameter(Description = "1: Disponible<br>2: En atención<br>3: Atendida")] TableState status, CancellationToken cancellationToken)
@@ -119,7 +122,7 @@ namespace Foody.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [SwaggerOperation(Summary = "Obtener pedidos en proceso de una mesa", Description = "Obtiene los pedidos pendientes de una mesa por su id")]
-        //[Authorize(Policy = "RequireWaiterRole")]
+        [Authorize(Policy = "RequireWaiterRole")]
         public async Task<IActionResult> GetOrders([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var query = new GetPendingOrdersQuery(id);

@@ -11,16 +11,23 @@ using Foody.Shared.Hateoas;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 
 namespace Foody.API.Controllers
 {
     [Route($"api/{ControllersConstants.DISHES}")]
     [ApiController]
-   // [Authorize(Policy = "RequireManagerRole")]
+    [Authorize(Policy = "RequireManagerRole")]
     public class DishController(ISender sender, IMapper mapper, IEntityService<Dish> genericService) : ControllerBase
     {
         [HttpPost(Name = $"{ControllersConstants.DISHES}/{nameof(Create)}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Crear platillo", Description = "Crea un platillo con un nombre, precio, descripción y sus ingredientes")]
         public async Task<IActionResult> Create([FromBody] CreateDishRequest request, CancellationToken cancellationToken)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
@@ -36,6 +43,12 @@ namespace Foody.API.Controllers
         }
 
         [HttpPut("{id}", Name = $"{ControllersConstants.DISHES}/{nameof(Update)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Actualizar platillo", Description = "Actualiza los ingredientes de un platillo dado")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateDishRequest request, CancellationToken cancellationToken)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
@@ -51,6 +64,11 @@ namespace Foody.API.Controllers
         }
 
         [HttpGet(Name = $"{ControllersConstants.DISHES}/{nameof(Get)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Obtener platillos", Description = "Obtiene todos los platillos registrados")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {         
             var result = await genericService.GetAsync(cancellationToken: cancellationToken, filter: null, readOnly: true);
@@ -61,6 +79,12 @@ namespace Foody.API.Controllers
         }
 
         [HttpGet("{id}", Name = $"{ControllersConstants.DISHES}/{nameof(GetById)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Obtener platillo por ID", Description = "Obtiene un platillo por su ID")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
         {
             var result = await genericService.GetByIdAsync(id, cancellationToken, true);
@@ -71,6 +95,11 @@ namespace Foody.API.Controllers
         }
 
         [HttpGet("pages", Name = $"{ControllersConstants.DISHES}/{nameof(GetPages)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(Summary = "Obtener platillos paginados", Description = "Obtiene los platillos registrados de forma paginada")]
         public async Task<IActionResult> GetPages(CancellationToken cancellationToken, Guid? cursor, bool? isNextPage, int pageSize = 5, bool includeFurtherData = false)
         {
             GetQuery<Dish> query = new GetQuery<Dish>(cursor, isNextPage, pageSize, includeFurtherData);

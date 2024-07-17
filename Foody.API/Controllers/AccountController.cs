@@ -12,6 +12,7 @@ using Foody.Shared.Constants.Messages;
 using Foody.Shared.Hateoas;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Foody.API.Controllers
@@ -46,6 +47,9 @@ namespace Foody.API.Controllers
 
         
         [HttpPost(HateoasConstants.LOGIN, Name = nameof(Login))]
+        [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [SwaggerOperation(Summary = "Login", Description = "Autentica un usuario en la API y le devuelve su respectivo JWT")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             if(!ModelState.IsValid) return BadRequest(ResponseMessages.InvalidRequest);
@@ -73,6 +77,9 @@ namespace Foody.API.Controllers
         }
 
         [HttpPost(HateoasConstants.SIGN_UP_ADMIN, Name = nameof(SignUpAdmin))]
+        [ProducesResponseType(typeof(SignUpUserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [SwaggerOperation(Summary = "SignUpAdmin", Description = "Registra un usuario tipo administrador en la API")]
         public async Task<IActionResult> SignUpAdmin([FromBody] SignUpUserRequest request)
         {
            if(!ModelState.IsValid) return BadRequest(ResponseMessages.InvalidRequest);
@@ -97,6 +104,9 @@ namespace Foody.API.Controllers
         }
 
         [HttpPost(HateoasConstants.SIGN_UP_WAITER, Name = nameof(SignUpWaiter))]
+        [ProducesResponseType(typeof(SignUpUserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [SwaggerOperation(Summary = "SignUpWaiter", Description = "Registra un usuario tipo mesero en la API")]
         public async Task<IActionResult> SignUpWaiter([FromBody] SignUpUserRequest request)
         {
             if(!ModelState.IsValid) return BadRequest(ResponseMessages.InvalidRequest);

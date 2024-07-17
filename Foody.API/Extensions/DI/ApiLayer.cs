@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Foody.API.Requests.Users;
+using Microsoft.OpenApi.Any;
 
 namespace Foody.API.Extensions.DI
 {
@@ -16,6 +18,20 @@ namespace Foody.API.Extensions.DI
             {
                 //Specifying the version
                 option.SwaggerDoc("v1", new OpenApiInfo { Title = "Foody API", Version = "v1" });
+
+                option.MapType<SignUpUserRequest>(() => new OpenApiSchema
+                {
+                    Type = "object",
+                    Properties = new Dictionary<string, OpenApiSchema>
+                    {
+                        ["name"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("John") },
+                        ["lastname"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("Doe") },
+                        ["username"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("johndoe") },
+                        ["email"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("john.doe@example.com") },
+                        ["password"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("password123") },
+                        ["confirmPassword"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("password123") }
+                    }
+                });
                 //Adding the security definitions with the name of "Bearer"
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
